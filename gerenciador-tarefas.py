@@ -3,12 +3,23 @@ import os
 tarefas = ['Regar as plantas', 'Jogar o lixo fora', 'Pagar as contas']
 
 def titulo(msg):
+    """
+    Adiciona um título configurado para cada opção.
+
+    Args:
+        msg (string): Define o título que vai aparecer
+    """
+    
     os.system('cls')
     print('-' * 40)
     print(msg.center(40))
     print('-' * 40)
 
 def adicionar_tarefa():
+    """
+    Possibilita adicionar novas tarefas à lista
+    """
+
     titulo('Adicionar Tarefas')
     nome = input('Digite a tarefa: ')
     tarefas.append(nome)
@@ -16,6 +27,10 @@ def adicionar_tarefa():
     voltar()
 
 def visualizar_tarefas():
+    """
+    Visualiza todas as tarefas existentes na lista
+    """
+
     titulo('Suas Tarefas')
     c = 1
     for i in tarefas:
@@ -25,6 +40,10 @@ def visualizar_tarefas():
     voltar()
 
 def remover_tarefa():
+    """
+    Possibilita remover alguma tarefa existente digitando seu índice
+    """
+
     titulo('Remover uma Tarefa')
     c = 1
     for i in tarefas:
@@ -43,24 +62,38 @@ def remover_tarefa():
         voltar()
 
 def voltar():
+    """
+    Comando rápido para voltar ao menu principal
+    """
+
     volt = input('Pressione alguma tecla para voltar: ')
     menu()
 
 def menu():
+    """
+    Mostra as opções disponíveis no programa
+    """
+
     titulo('Menu Principal')
     print("""1. Adicionar tarefa
 2. Visualizar tarefas
 3. Remover tarefas
 4. Sair""")
-    esc = int(input('Escolha uma opção: '))
-    if esc == 1:
-        adicionar_tarefa()
-    elif esc == 2:
-        visualizar_tarefas()
-    elif esc == 3:
-        remover_tarefa()
-    elif esc == 4:
-        print('Saindo do programa...')
-        os.system('cls')
+    try:
+        esc = int(input('Escolha uma opção: '))
+        if esc == 1:
+            adicionar_tarefa()
+        elif esc == 2:
+            visualizar_tarefas()
+        elif esc == 3:
+            remover_tarefa()
+        elif esc == 4:
+            print('Saindo do programa...')
+            os.system('cls')
+        else:
+            raise ValueError
+    except ValueError:
+        print('ERRO! Digite apenas números de 1 a 4!')
+        voltar()
 
 menu()
