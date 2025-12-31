@@ -3,7 +3,7 @@ import os
 tarefas = ['Regar as plantas', 'Jogar o lixo fora', 'Pagar as contas']
 
 def titulo(msg):
-#    os.system('cls')
+    os.system('cls')
     print('-' * 40)
     print(msg.center(40))
     print('-' * 40)
