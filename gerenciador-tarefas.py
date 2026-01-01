@@ -1,6 +1,22 @@
 import os
 
-tarefas = ['Regar as plantas', 'Jogar o lixo fora', 'Pagar as contas']
+arquivo = 'tarefas.txt'
+
+def carregar_tarefas():
+    if not os.path.exists(arquivo):
+        with open(arquivo, 'w'):
+            pass
+        return []
+    
+    with open(arquivo, 'r', encoding='utf-8') as arq:
+        return [linha.strip() for linha in arq.readlines()]
+
+def salvar_tarefas():
+    with open(arquivo, 'w', encoding='utf-8') as arq:
+        for tarefa in tarefas:
+            arq.write(tarefa + '\n')
+
+tarefas = carregar_tarefas()
 
 def titulo(msg):
     """
@@ -23,6 +39,7 @@ def adicionar_tarefa():
     titulo('Adicionar Tarefas')
     nome = input('Digite a tarefa: ')
     tarefas.append(nome)
+    salvar_tarefas()
     print(f'A tarefa {nome} foi adicionada com sucesso!')
     voltar()
 
@@ -45,21 +62,23 @@ def remover_tarefa():
     """
 
     titulo('Remover uma Tarefa')
-    c = 1
-    for i in tarefas:
-        print(f'{c}. {i}')
-        c += 1
+    for i, tarefa in enumerate(tarefas, start=1):
+        print(f'{i}. {tarefa}')
+
     esc = int(input('Escolha uma tarefa para remover [0 para não remover]: '))
-    if esc != 0:
-        esc2 = str(input(f'Deseja realmente remover a tarefa {tarefas[esc-1]} da sua lista? [S/N]: ')).upper().strip()
-        if esc2 == 'S':
-            del tarefas[esc-1]
-            print('Tarefa removida com sucesso!')
-            voltar()
-        else:
-            voltar()
-    elif esc == 0:
+
+    if esc == 0:
         voltar()
+        return
+    
+    if 1 <= esc <= len(tarefas):
+        confirmacao = input(f'Deseja realmente remover "{tarefas[esc-1]}"? [S/N]').upper().strip()
+
+        if confirmacao == 'S':
+            del tarefas[esc-1]
+            salvar_tarefas()
+            print('Tarefa removida com sucesso!')
+    voltar()
 
 def voltar():
     """
@@ -88,7 +107,6 @@ def menu():
         elif esc == 3:
             remover_tarefa()
         elif esc == 4:
-            print('Saindo do programa...')
             os.system('cls')
         else:
             raise ValueError
